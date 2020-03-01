@@ -44,6 +44,7 @@ import javax.imageio.ImageIO;
 import javax.xml.stream.XMLStreamException;
 
 import net.sf.freecol.FreeCol;
+import net.sf.freecol.client.control.MapEditorController;
 import net.sf.freecol.common.FreeColException;
 import net.sf.freecol.common.FreeColSeed;
 import net.sf.freecol.common.debug.FreeColDebugger;
@@ -136,6 +137,7 @@ public final class FreeColServer {
     public static final String PUBLIC_SERVER_TAG = "publicServer";
     public static final String SAVED_GAME_TAG = "savedGame";
     public static final String SINGLE_PLAYER_TAG = "singleplayer";
+    public static final String AUTHOR_TAG = "author";
 
     /**
      * The save game format used for saving games.
@@ -884,6 +886,10 @@ public final class FreeColServer {
                                   getRandomState(this.random));
 
                 xw.writeAttribute(DEBUG_TAG, FreeColDebugger.getDebugModes());
+
+//                if (owner.equals(MapEditorController.))
+//                xw.writeAttribute(AUTHOR_TAG, (FreeCol.getName() != null) ? FreeCol.getName() : "Peanut butter");
+                xw.writeAttribute(AUTHOR_TAG, (getGame().getCurrentPlayer() != null) ? getGame().getCurrentPlayer().getName(): "currentplayer is null");
 
                 if (active != null) {
                     this.serverGame.setInitialActiveUnitId(active.getId());
