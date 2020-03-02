@@ -19,15 +19,6 @@
 
 package net.sf.freecol.client.control;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.logging.Logger;
-
-import javax.swing.SwingUtilities;
-import javax.xml.stream.XMLStreamException;
-
 import net.sf.freecol.FreeCol;
 import net.sf.freecol.client.FreeColClient;
 import net.sf.freecol.client.gui.GUI;
@@ -35,20 +26,21 @@ import net.sf.freecol.common.FreeColException;
 import net.sf.freecol.common.i18n.Messages;
 import net.sf.freecol.common.io.FreeColDirectories;
 import net.sf.freecol.common.io.FreeColSavegameFile;
-import net.sf.freecol.common.model.Game;
-import net.sf.freecol.common.model.Map;
-import net.sf.freecol.common.model.Nation;
-import net.sf.freecol.common.model.Player;
-import net.sf.freecol.common.model.Specification;
-import net.sf.freecol.common.model.StringTemplate;
-import net.sf.freecol.common.model.Tile;
+import net.sf.freecol.common.model.*;
 import net.sf.freecol.common.option.MapGeneratorOptions;
 import net.sf.freecol.common.option.OptionGroup;
-import net.sf.freecol.common.util.LogBuilder;
 import net.sf.freecol.server.FreeColServer;
 import net.sf.freecol.server.generator.MapGenerator;
 import net.sf.freecol.server.model.ServerGame;
 import net.sf.freecol.server.model.ServerPlayer;
+
+import javax.swing.*;
+import javax.xml.stream.XMLStreamException;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.logging.Logger;
 
 
 /**
@@ -215,13 +207,15 @@ public final class MapEditorController extends FreeColClientHolder {
         map.resetHighSeasCount();
         map.resetLayers();
 
+        String authorName = "PotatoBag";
+
         gui.showStatusPanel(Messages.message("status.savingGame"));
         new Thread(FreeCol.CLIENT_THREAD + "-Saving-Map") {
             @Override
             public void run() {
                 try {
                     BufferedImage thumb = gui.createMiniMapThumbNail();
-                    getFreeColServer().saveMapEditorGame(file, thumb);
+                    getFreeColServer().saveMapEditorGame(file, thumb, authorName);
                     SwingUtilities.invokeLater(() -> {
                             gui.closeStatusPanel();
                             gui.requestFocusInWindow();
